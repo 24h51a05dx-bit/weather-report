@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMIGO Team Weather Report</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- AMIGO Landing Page -->
+    <section id="landingPage" class="landing-page" aria-label="AMIGO Team Weather Report welcome">
+        <div class="landing-bg-shapes" aria-hidden="true">
+            <span class="shape shape-1"></span>
+            <span class="shape shape-2"></span>
+            <span class="shape shape-3"></span>
+        </div>
+        <div class="landing-content">
+            <div class="landing-logo-wrap">
+                <img src="amigo-logo.png" alt="amigo Techno Park Private limited" class="landing-logo">
+            </div>
+            <h1 class="landing-title">
+                <span class="title-line">Team Weather</span>
+                <span class="title-accent">Report</span>
+            </h1>
+            <p class="landing-subtitle">Real-time forecasts built for the AMIGO team</p>
+
+            <div id="landingPreview" class="landing-preview" role="status" aria-live="polite">
+                <div class="preview-loader">
+                    <span class="preview-spinner"></span>
+                    Loading team snapshot…
+                </div>
+            </div>
+
+            <div class="landing-datetime">
+                <p id="landingDate" class="landing-date">—</p>
+                <p id="landingTime" class="landing-time">—</p>
+            </div>
+
+            <button type="button" id="enterAppBtn" class="enter-app-btn">
+                <span>Launch Weather Report</span>
+                <span class="btn-arrow" aria-hidden="true">→</span>
+            </button>
+
+            <footer class="landing-footer">
+                <span>Intern Project · Weather Intelligence Platform</span>
+            </footer>
+        </div>
+    </section>
+
+    <div id="mainApp" class="container hidden">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-brand">
+                <img src="amigo-logo.png" alt="amigo Techno Park Private limited" class="header-logo">
+                <h1>Team Weather Report</h1>
+            </div>
+            <div class="header-controls">
+                <button id="themeToggle" class="theme-toggle" title="Toggle Dark/Light Mode">
+                    🌙
+                </button>
+                <button id="locationBtn" class="location-btn" title="Use Current Location">
+                    📍
+                </button>
+            </div>
+        </header>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="cityInput" placeholder="Search city name..." autocomplete="off">
+                <button id="searchBtn">🔍</button>
+            </div>
+            <div id="recentSearches" class="recent-searches"></div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="loading-spinner hidden">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="error-message hidden"></div>
+
+        <!-- Weather Card -->
+        <div id="weatherCard" class="weather-card hidden">
+            <div class="weather-header">
+                <div class="location-info">
+                    <h2 id="cityName">--</h2>
+                    <p id="countryName">--</p>
+                </div>
+                <div class="datetime">
+                    <p id="currentDate">--</p>
+                    <p id="currentTime">--</p>
+                </div>
+            </div>
+
+            <div class="weather-main">
+                <div class="weather-icon">
+                    <span id="weatherIcon">🌤️</span>
+                </div>
+                <div class="temperature-section">
+                    <div class="temperature">
+                        <span id="temperature">--</span>
+                        <span class="temp-unit">°C</span>
+                    </div>
+                    <div class="temp-toggle">
+                        <button id="celsiusBtn" class="temp-btn active">°C</button>
+                        <button id="fahrenheitBtn" class="temp-btn">°F</button>
+                    </div>
+                </div>
+                <p id="weatherCondition" class="weather-condition">--</p>
+            </div>
+
+            <div class="weather-details">
+                <div class="detail-item">
+                    <span class="detail-icon">💧</span>
+                    <div class="detail-info">
+                        <p class="detail-label">Humidity</p>
+                        <p id="humidity" class="detail-value">--%</p>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">💨</span>
+                    <div class="detail-info">
+                        <p class="detail-label">Wind Speed</p>
+                        <p id="windSpeed" class="detail-value">-- km/h</p>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">🌡️</span>
+                    <div class="detail-info">
+                        <p class="detail-label">Feels Like</p>
+                        <p id="feelsLike" class="detail-value">--°C</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hourly Forecast -->
+        <div id="hourlyForecast" class="hourly-forecast hidden">
+            <h3>24-Hour Forecast</h3>
+            <div id="hourlyCards" class="hourly-cards"></div>
+        </div>
+
+        <!-- Charts Section -->
+        <div id="chartsSection" class="charts-section hidden">
+            <div class="chart-container">
+                <canvas id="temperatureChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="humidityChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="windChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
