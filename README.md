@@ -24,28 +24,7 @@ A real-time weather dashboard built for **AMIGO TECH PVT LIMITED** (Intern Proje
 
 Location (GPS) works only over **http://localhost**, not when opening the HTML file directly (`file://`).
 
-### Option 1 — Double-click (easiest)
-
-1. Open the `weather-report` folder in File Explorer
-2. Double-click **`start.bat`**
-3. Your browser opens automatically
-
-### Option 2 — Terminal (PowerShell)
-
-```powershell
-cd c:\Users\kasan\Desktop\weather\weather-report
-.\start.bat
-```
-
-Or:
-
-```powershell
-.\start.ps1
-```
-
-> In PowerShell you must use `.\start.bat`, not `start.bat` alone.
-
-### Option 3 — Live Server (VS Code / Cursor)
+###  — Live Server (VS Code / Cursor)
 
 Right-click `index.html` → **Open with Live Server**
 
@@ -77,8 +56,6 @@ weather-report/
 ├── style.css       # Styles and themes
 ├── script.js       # Weather logic and location
 ├── amigo-logo.png  # Company logo
-├── start.bat       # Start server (Windows)
-├── start.ps1       # Start server (PowerShell)
 └── README.md
 ```
 
@@ -96,7 +73,8 @@ weather-report/
 | Service | Purpose |
 |--------|---------|
 | Open-Meteo Forecast | Current weather and hourly data |
-| Open-Meteo Geocoding | City search and reverse geocoding |
+| Open-Meteo Geocoding | City search by name |
+| BigDataCloud / Nominatim | Reverse geocoding (GPS → city name) |
 | ipwho.is / geojs.io | IP-based location fallback |
 
 No API keys required.

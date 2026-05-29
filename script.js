@@ -331,45 +331,43 @@ async function getDeviceCoordinates() {
 }
 
 // Reverse geocode lat/lon to city name
+// Open-Meteo has /v1/search only — /v1/reverse does not exist (returns 404)
 async function reverseGeocode(latitude, longitude) {
     const base = { latitude, longitude };
+    const lat = Number(latitude.toFixed(6));
+    const lon = Number(longitude.toFixed(6));
 
-    try {
-        const response = await fetch(
-            `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${latitude}&longitude=${longitude}&language=en&count=1`
-        );
-        if (response.ok) {
-            const data = await response.json();
-            const place = data.results?.[0];
-            if (place?.name) {
-                return {
-                    ...base,
-                    name: place.name,
-                    country: place.country || place.country_code || 'Unknown'
-                };
-            }
-        }
-    } catch (error) {
-        console.warn('Open-Meteo reverse geocode failed:', error);
-    }
-
-    try {
-        const response = await fetch(
-            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
-        );
-        if (response.ok) {
+    const providers = [
+        async () => {
+            const response = await fetch(
+                `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
+            );
+            if (!response.ok) throw new Error('BigDataCloud failed');
             const data = await response.json();
             const name = data.city || data.locality || data.principalSubdivision;
-            if (name) {
-                return {
-                    ...base,
-                    name,
-                    country: data.countryName || 'Unknown'
-                };
-            }
+            if (!name) throw new Error('BigDataCloud no city');
+            return { ...base, name, country: data.countryName || 'Unknown' };
+        },
+        async () => {
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=en`,
+                { headers: { Accept: 'application/json', 'User-Agent': 'AMIGO-Weather-Report/1.0' } }
+            );
+            if (!response.ok) throw new Error('Nominatim failed');
+            const data = await response.json();
+            const addr = data.address || {};
+            const name = addr.city || addr.town || addr.village || addr.suburb || addr.state_district;
+            if (!name) throw new Error('Nominatim no city');
+            return { ...base, name, country: addr.country || 'Unknown' };
         }
-    } catch (error) {
-        console.warn('BigDataCloud reverse geocode failed:', error);
+    ];
+
+    for (const provider of providers) {
+        try {
+            return await provider();
+        } catch (error) {
+            console.warn('Reverse geocode provider failed:', error.message);
+        }
     }
 
     return {
