@@ -863,10 +863,13 @@ function toggleTheme() {
     }
 }
 
-// Load Theme
+// Load Theme (dark mode is the default for the main app)
 function loadTheme() {
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
+    if (savedTheme === 'light') {
+        document.body.classList.remove('dark-mode');
+        themeToggle.textContent = '🌙';
+    } else {
         document.body.classList.add('dark-mode');
         themeToggle.textContent = '☀️';
     }
